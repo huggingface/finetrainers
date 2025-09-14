@@ -126,6 +126,7 @@ class VideoCaptionFilePairDataset(torch.utils.data.IterableDataset, torch.distri
         for caption_file in caption_files:
             data_file = self._find_data_file(caption_file)
             if data_file:
+                print(f"Adding data with root {self.root} and file {data_file}")
                 data.append(
                     {
                         "caption": (self.root / caption_file).as_posix(),
