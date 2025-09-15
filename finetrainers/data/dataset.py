@@ -129,8 +129,8 @@ class VideoCaptionFilePairDataset(torch.utils.data.IterableDataset, torch.distri
                 print(f"Adding data with root {self.root} and file {data_file}")
                 data.append(
                     {
-                        "caption": (caption_file).as_posix(),
-                        "video": (data_file).as_posix(),
+                        "caption": caption_file,
+                        "video": data_file,
                     }
                 )
 
