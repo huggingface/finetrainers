@@ -875,6 +875,7 @@ def _initialize_local_dataset(
         raise ValueError("Found multiple metadata files. Please ensure there is only one metadata file.")
 
     if len(metadata_files) == 1:
+        print("Loading image / video folder dataset type")
         if dataset_type == "image":
             dataset = ImageFolderDataset(root.as_posix(), infinite=infinite)
         else:
@@ -887,6 +888,7 @@ def _initialize_local_dataset(
         return _initialize_webdataset(root.as_posix(), dataset_type, infinite, _caption_options=_caption_options)
 
     if _has_data_caption_file_pairs(root, remote=False):
+        print("Loading file pair dataset type")
         if dataset_type == "image":
             dataset = ImageCaptionFilePairDataset(root.as_posix(), infinite=infinite)
         else:
