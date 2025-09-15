@@ -727,6 +727,8 @@ class IterableDatasetPreprocessingWrapper(
                     sample[key] = _preprocess_image(sample[key])
                 elif isinstance(sample[key], (decord.VideoReader, torchvision.io.video_reader.VideoReader)):
                     sample[key] = _preprocess_video(sample[key])
+                else:
+                    print("No preporcesor for type ", type(sample[key]))
 
             if self.dataset_type == "image":
                 if self.image_resolution_buckets:
