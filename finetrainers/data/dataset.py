@@ -393,6 +393,8 @@ class VideoFolderDataset(torch.utils.data.IterableDataset, torch.distributed.che
 
         data = datasets.load_dataset("videofolder", data_dir=self.root.as_posix(), split="train")
 
+        logger.info(f"Dataset after loading as videofolder: {data}")
+
         self._data = data.to_iterable_dataset()
         self._sample_index = 0
         self._precomputable_once = len(data) <= MAX_PRECOMPUTABLE_ITEMS_LIMIT
