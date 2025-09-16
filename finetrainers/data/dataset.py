@@ -14,7 +14,7 @@ import PIL.JpegImagePlugin
 import torch
 import torch.distributed.checkpoint.stateful
 import torchvision
-from torchcodec.decoders import VideoDecoder, AudioDecoder
+from torchcodec.decoders import VideoDecoder
 from diffusers.utils import load_image, load_video
 from huggingface_hub import list_repo_files, repo_exists, snapshot_download
 from tqdm.auto import tqdm
@@ -1045,7 +1045,7 @@ else:
         video = video.float() / 127.5 - 1.0
         return video
     
-    def _preprocess_video_from_decoder(video: torchvision.torchcodec.decoders.VideoDecoder) -> torch.Tensor:
+    def _preprocess_video_from_decoder(video: VideoDecoder) -> torch.Tensor:
         vidframes = video.get_frames_played_in_range(0, 60)
         frames = []
         # Error driven data loading! torchvision does not expose length of video
