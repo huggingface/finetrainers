@@ -14,6 +14,7 @@ import PIL.JpegImagePlugin
 import torch
 import torch.distributed.checkpoint.stateful
 import torchvision
+from torchcodec.decoders import VideoDecoder, AudioDecoder
 from diffusers.utils import load_image, load_video
 from huggingface_hub import list_repo_files, repo_exists, snapshot_download
 from tqdm.auto import tqdm
