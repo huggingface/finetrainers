@@ -725,7 +725,7 @@ class IterableDatasetPreprocessingWrapper(
 
             sample = {self.rename_columns.get(k, k): v for k, v in sample.items()}
 
-            print(f"Dateset sample: {sample}")
+            logger.debug(f"Dateset sample: {sample}")
 
             for key in sample.keys():
                 if isinstance(sample[key], PIL.Image.Image):
@@ -734,7 +734,6 @@ class IterableDatasetPreprocessingWrapper(
                     sample[key] = _preprocess_video(sample[key])
                 elif isinstance(sample[key], VideoDecoder):
                     sample[key] = _preprocess_video_from_decoder(sample[key])
-            print(f"Dateset sample (after): {sample}")
 
             if self.dataset_type == "image":
                 if self.image_resolution_buckets:
@@ -881,7 +880,7 @@ def _initialize_local_dataset(
         raise ValueError("Found multiple metadata files. Please ensure there is only one metadata file.")
 
     if len(metadata_files) == 1:
-        print("Loading image / video folder dataset type")
+        logger.debug("Loading image / video folder dataset type")
         if dataset_type == "image":
             dataset = ImageFolderDataset(root.as_posix(), infinite=infinite)
         else:
@@ -894,7 +893,7 @@ def _initialize_local_dataset(
         return _initialize_webdataset(root.as_posix(), dataset_type, infinite, _caption_options=_caption_options)
 
     if _has_data_caption_file_pairs(root, remote=False):
-        print("Loading file pair dataset type")
+        logger.debug("Loading file pair dataset type")
         if dataset_type == "image":
             dataset = ImageCaptionFilePairDataset(root.as_posix(), infinite=infinite)
         else:
