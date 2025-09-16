@@ -56,8 +56,8 @@ class ImageCaptionFilePairDataset(torch.utils.data.IterableDataset, torch.distri
             if data_file:
                 data.append(
                     {
-                        "caption": (self.root / caption_file).as_posix(),
-                        "image": (self.root / data_file).as_posix(),
+                        "caption": caption_file,
+                        "image": data_file,
                     }
                 )
 
