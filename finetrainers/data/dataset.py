@@ -727,8 +727,8 @@ class IterableDatasetPreprocessingWrapper(
                     sample[key] = _preprocess_image(sample[key])
                 elif isinstance(sample[key], (decord.VideoReader, torchvision.io.video_reader.VideoReader)):
                     sample[key] = _preprocess_video(sample[key])
-                else:
-                    print("No preporcesor for type ", type(sample[key]))
+                elif isinstance(sample[key], torchvision.torchcodec.decoders.VideoDecoder):
+                    sample[key] = _preprocess_video_from_decoder(sample[key])
 
             if self.dataset_type == "image":
                 if self.image_resolution_buckets:
@@ -1038,6 +1038,19 @@ else:
         try:
             for _ in range(MAX_FRAMES):
                 frames.append(next(video)["data"])
+        except StopIteration:
+            pass
+        video = torch.stack(frames)
+        video = video.float() / 127.5 - 1.0
+        return video
+    
+    def _preprocess_video_from_decoder(video: torchvision.torchcodec.decoders.VideoDecoder) -> torch.Tensor:
+        vidframes = video.get_frames_played_in_range(0, 60)
+        frames = []
+        # Error driven data loading! torchvision does not expose length of video
+        try:
+            for _ in range(MAX_FRAMES):
+                frames.append(next(vidframes)["data"])
         except StopIteration:
             pass
         video = torch.stack(frames)
