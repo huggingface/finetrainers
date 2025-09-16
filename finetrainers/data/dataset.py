@@ -1046,12 +1046,11 @@ else:
         return video
     
     def _preprocess_video_from_decoder(video: VideoDecoder) -> torch.Tensor:
-        vidframes = video.get_frames_played_in_range(0, 60)
         frames = []
         # Error driven data loading! torchvision does not expose length of video
         try:
-            for _ in range(MAX_FRAMES):
-                frames.append(next(vidframes)["data"])
+            for frame in video:
+                frames.append(frame)
         except StopIteration:
             pass
         video = torch.stack(frames)
