@@ -723,6 +723,8 @@ class IterableDatasetPreprocessingWrapper(
 
             sample = {self.rename_columns.get(k, k): v for k, v in sample.items()}
 
+            print(f"Dateset sample: {sample}")
+
             for key in sample.keys():
                 if isinstance(sample[key], PIL.Image.Image):
                     sample[key] = _preprocess_image(sample[key])
@@ -730,6 +732,7 @@ class IterableDatasetPreprocessingWrapper(
                     sample[key] = _preprocess_video(sample[key])
                 elif isinstance(sample[key], VideoDecoder):
                     sample[key] = _preprocess_video_from_decoder(sample[key])
+            print(f"Dateset sample (after): {sample}")
 
             if self.dataset_type == "image":
                 if self.image_resolution_buckets:
