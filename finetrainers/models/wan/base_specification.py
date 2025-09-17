@@ -355,7 +355,9 @@ class WanModelSpecification(ModelSpecification):
         }
         components = get_non_null_items(components)
 
-        if self.transformer_config.get("image_dim", None) is not None:
+        #### Changed the logic to match the validation step - if image_dim is NULL load the standard
+        #### wan pipeline, else load the I2V pipeline
+        if self.transformer_config.get("image_dim", None) is None:
             pipe = WanPipeline.from_pretrained(
                 self.pretrained_model_name_or_path, **components, revision=self.revision, cache_dir=self.cache_dir
             )
