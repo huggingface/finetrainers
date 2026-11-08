@@ -103,7 +103,8 @@ def prepare_sigmas(
             device=device,
             generator=generator,
         )
-        indices = (weights * num_train_timesteps).long()
+        # scheduler.sigmas runs from noise to data, so a larger weight must select an earlier index
+        indices = ((1 - weights) * num_train_timesteps).long().clamp(max=num_train_timesteps - 1)
     elif isinstance(scheduler, CogVideoXDDIMScheduler):
         # TODO(aryan): Currently, only uniform sampling is supported. Add more sampling schemes.
         weights = torch.rand(size=(batch_size,), device=device, generator=generator)
